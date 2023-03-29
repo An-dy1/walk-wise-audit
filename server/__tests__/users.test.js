@@ -1,5 +1,6 @@
 const request = require('supertest');
 const app = require('../app');
+const { closeDB } = require('../database');
 const User = require('../models/User');
 
 describe('User Registration and Login', () => {
@@ -12,6 +13,7 @@ describe('User Registration and Login', () => {
   afterAll(async () => {
     // Delete test users from the database after the test suite.
     await User.deleteMany({ email: validTestEmail });
+    await closeDB();
   });
 
   it('should register a new user', async () => {
@@ -23,7 +25,9 @@ describe('User Registration and Login', () => {
       })
       .expect(200)
       .expect((res) => {
-        expect(res.body.token).toBeTruthy();
+        expect(res.body.data.token).toBeTruthy();
+        expect(res.body.status).toBe('success');
+        expect(res.body.message).toBe('User registered');
       });
   });
 
@@ -35,7 +39,10 @@ describe('User Registration and Login', () => {
         email: validTestEmail,
         password: validTestPw,
       })
-      .expect(400);
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.status).toBe('error');
+      });
   });
 
   // Test for unsuccessful registration due to invalid email or password
@@ -49,6 +56,7 @@ describe('User Registration and Login', () => {
       .expect(400)
       .expect((res) => {
         expect(res.body.errors).toBeTruthy();
+        expect(res.body.status).toBe('error');
       });
   });
 

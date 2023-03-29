@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const { check, validationResult } = require('express-validator');
-
+const apiResponse = require('../utils/apiResponse');
 const User = require('../models/User');
 const secretKey = process.env.SECRET_OR_KEY;
 
@@ -22,7 +22,13 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return apiResponse(
+        res,
+        'error',
+        'Validation error',
+        null,
+        errors.array()
+      );
     }
 
     const { email, password } = req.body;
@@ -30,9 +36,7 @@ router.post(
     try {
       let user = await User.findOne({ email });
       if (user) {
-        return res
-          .status(400)
-          .json({ errors: [{ msg: 'User already exists' }] });
+        return apiResponse(res, 'error', 'User already exists', null, null);
       }
 
       user = new User({ email, password });
@@ -49,7 +53,7 @@ router.post(
 
       jwt.sign(payload, secretKey, { expiresIn: 3600 }, (err, token) => {
         if (err) throw err;
-        res.json({ token });
+        apiResponse(res, 'success', 'User registered', { token }, null);
       });
     } catch (err) {
       console.error(err.message);
