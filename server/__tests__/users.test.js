@@ -1,7 +1,13 @@
+// import * as request from 'supertest';
+// import app from '../app';
+// import { closeDB } from '../database';
+// import User from '../models/User';
 const request = require('supertest');
 const app = require('../app');
-const { closeDB } = require('../database');
-const User = require('../models/User');
+const closeDB = require('../database').closeDB;
+const User = require('../models/User').default;
+// import { closeDB } from '../database';
+// import User from '../models/User';
 
 describe('User Registration and Login', () => {
   let validTestEmail = 'testuser@test.com';

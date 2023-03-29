@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const bodyParser = require('body-parser');
-const { connectDB } = require('./database');
-const passport = require('passport');
-const passportConfig = require('./config/passport');
-const userRoutes = require('./routes/users');
+import bodyParser from 'body-parser';
+import { connectDB } from './database';
+import passport from 'passport';
+import passportConfig from './config/passport';
+import userRoutes from './routes/users';
 
 connectDB();
 
@@ -21,4 +21,4 @@ app.get('/', (req, res) => {
   res.send('Hello and welcome to Walk Wise Audit!');
 });
 
-module.exports = app;
+export default app;

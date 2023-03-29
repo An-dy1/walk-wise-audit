@@ -1,11 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const passport = require('passport');
-const { check, validationResult } = require('express-validator');
-const apiResponse = require('../utils/apiResponse');
-const User = require('../models/User');
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { check, validationResult } from 'express-validator';
+import apiResponse from '../utils/apiResponse';
+import User from '../models/User';
 const secretKey = process.env.SECRET_OR_KEY;
 
 // @route   POST /api/users/register
@@ -110,4 +109,4 @@ router.post(
   }
 );
 
-module.exports = router;
+export default router;

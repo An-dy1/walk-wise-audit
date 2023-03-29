@@ -1,4 +1,10 @@
-function apiResponse(res, status, message, data = null, errors = null) {
+export default function apiResponse(
+  res,
+  status,
+  message,
+  data = null,
+  errors = null
+) {
   const response = {
     status,
     message,
@@ -14,5 +20,3 @@ function apiResponse(res, status, message, data = null, errors = null) {
 
   res.status(status === 'success' ? 200 : 400).json(response);
 }
-
-module.exports = apiResponse;
