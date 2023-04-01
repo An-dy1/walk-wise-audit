@@ -9,7 +9,6 @@ const EntrySchema = new Schema({
   },
   location: {
     type: String,
-    enum: ['Point'],
     required: true,
   },
   coordinates: {

@@ -3,13 +3,16 @@ const app = require('../app');
 const { closeDB } = require('../database');
 const Entry = require('../models/Entry');
 const utils = require('./utils/testUtils');
+const validObjectId = process.env.TEST_USER_OBJECT_ID;
 
 describe('Manage entries', () => {
   let testingToken;
 
   beforeAll(async () => {
-    new ObjectId();
-    testingToken = utils.generateTestingToken('TestIdX1023', 'testabc@123.com');
+    testingToken = utils.generateTestingToken(
+      validObjectId,
+      'test123@testest.com'
+    );
     console.log(testingToken);
   });
 
@@ -22,7 +25,7 @@ describe('Manage entries', () => {
       .post('/api/entries/create')
       .set('Authorization', `Bearer ${testingToken}`)
       .send({
-        location: '123 Main St, San Francisco, CA 94105',
+        location: 'Point',
         text: 'This is a test entry',
         pictures: [],
         treeCoverRating: 5,
