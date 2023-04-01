@@ -1,4 +1,17 @@
-function apiResponse(res, status, message, data = null, errors = null) {
+function apiResponse(
+  res,
+  status,
+  message,
+  data = null,
+  errors = null,
+  statusCode = null
+) {
+  if (status === 'success') {
+    statusCode = statusCode || 200;
+  } else if (status === 'error') {
+    statusCode = statusCode || 400;
+  }
+
   const response = {
     status,
     message,
@@ -12,7 +25,7 @@ function apiResponse(res, status, message, data = null, errors = null) {
     response.errors = errors;
   }
 
-  res.status(status === 'success' ? 200 : 400).json(response);
+  return res.status(statusCode).json(response);
 }
 
 module.exports = apiResponse;
