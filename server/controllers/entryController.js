@@ -30,18 +30,19 @@ exports.createEntry = async (req, res) => {
     await newEntry.save();
     apiResponse(res, 'success', 'Entry created', newEntry, null);
   } catch (err) {
+    // todo: need to handle 401 and other errors better here
     console.error(err.message);
     apiResponse(res, 'error', 'Server error', null, 500);
   }
 };
 
-// exports.getEntries = async (req, res) => {
-//   try {
-//     const userId = req.user.id;
-//     const entries = await Entry.find({ user: userId });
-//     apiResponse(res, 'success', 'Entries retrieved', entries, null);
-//   } catch (err) {
-//     console.error(err.message);
-//     apiResponse(res, 'error', 'Server error', null, 500);
-//   }
-// };
+exports.getEntries = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const entries = await Entry.find({ user: userId });
+    apiResponse(res, 'success', 'Entries retrieved', entries, null);
+  } catch (err) {
+    console.error(err.message);
+    apiResponse(res, 'error', 'Server error', null, 500);
+  }
+};

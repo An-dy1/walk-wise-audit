@@ -10,7 +10,7 @@
     "start-api-dev": "nodemon server/server.js",
     "start-api": "node server/server.js"
   },
-  "author": "",
+  "author": "Andie Johnson",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

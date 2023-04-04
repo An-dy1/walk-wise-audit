@@ -13,7 +13,6 @@ describe('Manage entries', () => {
       validObjectId,
       'test123@testest.com'
     );
-    console.log(testingToken);
   });
 
   afterAll(async () => {
@@ -25,7 +24,7 @@ describe('Manage entries', () => {
       .post('/api/entries/create')
       .set('Authorization', `Bearer ${testingToken}`)
       .send({
-        location: 'Point',
+        location: '123 Main St, New York, NY 10001',
         text: 'This is a test entry',
         pictures: [],
         treeCoverRating: 5,
@@ -38,6 +37,18 @@ describe('Manage entries', () => {
         expect(res.body.data).toBeTruthy();
         expect(res.body.status).toBe('success');
         expect(res.body.message).toBe('Entry created');
+      });
+  });
+
+  it('should get all entries', async () => {
+    await request(app)
+      .get('/api/entries')
+      .set('Authorization', `Bearer ${testingToken}`)
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data).toBeTruthy();
+        expect(res.body.status).toBe('success');
+        expect(res.body.message).toBe('Entries retrieved');
       });
   });
 });

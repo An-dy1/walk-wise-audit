@@ -20,7 +20,7 @@ router.post(
 // @route  GET /api/entries
 // @desc   Get all entries for the authenticated user
 // @access Private
-// router.get('/', passport.authenticate('jwt', { session: false }), getEntries);
+router.get('/', passport.authenticate('jwt', { session: false }), getEntries);
 
 // @route  GET /api/entries/:id
 // @desc   Get a single entry by ID
