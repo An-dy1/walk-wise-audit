@@ -35,8 +35,45 @@ describe('Manage entries', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.data).toBeTruthy();
-        expect(res.body.status).toBe('success');
         expect(res.body.message).toBe('Entry created');
+      });
+  });
+
+  it('should not create a new entry without location', async () => {
+    await request(app)
+      .post('/api/entries/create')
+      .set('Authorization', `Bearer ${testingToken}`)
+      .send({
+        text: 'This is a test entry',
+        pictures: [],
+        treeCoverRating: 5,
+        adaComplianceRating: 5,
+        noiseRating: 5,
+        litterRating: 5,
+      })
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.data).toBeFalsy();
+        expect(res.body.message).toBe('Location and coordinates are required.');
+      });
+  });
+
+  it('should not create a new entry without coordinates', async () => {
+    await request(app)
+      .post('/api/entries/create')
+      .set('Authorization', `Bearer ${testingToken}`)
+      .send({
+        text: 'This is a test entry',
+        pictures: [],
+        treeCoverRating: 5,
+        adaComplianceRating: 5,
+        noiseRating: 5,
+        litterRating: 5,
+      })
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.data).toBeFalsy();
+        expect(res.body.message).toBe('Location and coordinates are required.');
       });
   });
 
@@ -47,7 +84,6 @@ describe('Manage entries', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.data).toBeTruthy();
-        expect(res.body.status).toBe('success');
         expect(res.body.message).toBe('Entries retrieved');
       });
   });

@@ -26,8 +26,7 @@ describe('User Registration and Login', () => {
       .expect(200)
       .expect((res) => {
         expect(res.body.data.token).toBeTruthy();
-        expect(res.body.status).toBe('success');
-        expect(res.body.message).toBe('User registered');
+        expect(res.body.message).toBe('User registered successfully.');
       });
   });
 
@@ -41,7 +40,7 @@ describe('User Registration and Login', () => {
       })
       .expect(400)
       .expect((res) => {
-        expect(res.body.status).toBe('error');
+        expect(res.body.message).toBe('User already exists.');
       });
   });
 
@@ -56,7 +55,6 @@ describe('User Registration and Login', () => {
       .expect(400)
       .expect((res) => {
         expect(res.body.errors).toBeTruthy();
-        expect(res.body.status).toBe('error');
       });
   });
 

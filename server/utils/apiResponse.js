@@ -13,7 +13,6 @@ function apiResponse(
   }
 
   const response = {
-    status,
     message,
   };
 

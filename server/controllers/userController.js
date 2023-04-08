@@ -8,7 +8,7 @@ const secretKey = process.env.SECRET_OR_KEY;
 exports.register = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return apiResponse(res, 'error', 'Validation error', null, errors.array());
+    return apiResponse(res, 'error', 'Validation error.', null, errors.array());
   }
 
   const { email, password } = req.body;
@@ -16,7 +16,7 @@ exports.register = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return apiResponse(res, 'error', 'User already exists', null, null);
+      return apiResponse(res, 'error', 'User already exists.', null, null);
     }
 
     user = new User({ email, password });
@@ -33,7 +33,13 @@ exports.register = async (req, res) => {
 
     jwt.sign(payload, secretKey, { expiresIn: 3600 }, (err, token) => {
       if (err) throw err;
-      apiResponse(res, 'success', 'User registered', { token }, null);
+      apiResponse(
+        res,
+        'success',
+        'User registered successfully.',
+        { token },
+        null
+      );
     });
   } catch (err) {
     console.error(err.message);
@@ -52,16 +58,24 @@ exports.login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid email or password' }] });
+      return apiResponse(
+        res,
+        'error',
+        'Invalid email or password.',
+        null,
+        null
+      );
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: 'Invalid email or password' }] });
+      return apiResponse(
+        res,
+        'error',
+        'Invalid email or password.',
+        null,
+        null
+      );
     }
 
     const payload = {
