@@ -7,6 +7,11 @@ const EntrySchema = new Schema({
     ref: 'User',
     required: true,
   },
+  audit: {
+    type: Schema.Types.ObjectId,
+    ref: 'Audit',
+    required: true,
+  },
   location: {
     type: String,
     required: true,

@@ -90,6 +90,10 @@ exports.getEntry = async (req, res) => {
 exports.updateEntry = async (req, res) => {
   try {
     const entry = await Entry.findById(req.params.id);
+    // Check if the logged-in user is the owner of the entry
+    if (entry.user.toString() !== req.user.id) {
+      return apiResponse(res, 'error', 'Not authorized', null, null, 403);
+    }
     const {
       location,
       coordinates,
@@ -131,8 +135,12 @@ exports.deleteEntry = async (req, res) => {
   try {
     const entry = await Entry.findById(req.params.id);
 
-    if (entry === null) {
+    if (!entry) {
       return apiResponse(res, 'error', 'Entry not found', null, null, 404);
+    }
+
+    if (entry.user.toString() !== req.user.id) {
+      return apiResponse(res, 'error', 'Not authorized', null, null, 403);
     }
 
     await Entry.deleteOne({ _id: req.params.id });

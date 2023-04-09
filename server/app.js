@@ -8,6 +8,7 @@ const passport = require('passport');
 const passportConfig = require('./config/passport');
 const userRoutes = require('./routes/users');
 const entryRoutes = require('./routes/entries');
+const auditRoutes = require('./routes/audits');
 
 connectDB();
 
@@ -18,6 +19,7 @@ passportConfig(passport);
 
 app.use('/api/users', userRoutes);
 app.use('/api/entries', entryRoutes);
+app.use('/api/audits', auditRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello and welcome to Walk Wise Audit!');
