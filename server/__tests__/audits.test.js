@@ -28,10 +28,41 @@ describe('Manage audits', () => {
         entries: [testEntryId],
         summary: 'This is a test audit',
       })
-      .expect(200)
+      .expect(201)
       .expect((res) => {
         expect(res.body.data).toBeTruthy();
         expect(res.body.message).toBe('Audit created');
       });
   });
+
+  it('should not create a new audit with invalid entry ID', async () => {
+    await request(app)
+      .post('/api/audits/create')
+      .set('Authorization', `Bearer ${testingToken}`)
+      .send({
+        entries: ['123'],
+        summary: 'This is a test audit',
+      })
+      .expect(400)
+      .expect((res) => {
+        expect(res.body.data).toBeFalsy();
+        expect(res.body.message).toBe('Invalid entry ID');
+      });
+  });
+
+  // NOTE: not implementing a check for this in the controller atm, but it might be worth returning to
+  //   it('should not create a new audit with duplicate entry ID', async () => {
+  //     await request(app)
+  //       .post('/api/audits/create')
+  //       .set('Authorization', `Bearer ${testingToken}`)
+  //       .send({
+  //         entries: [testEntryId, testEntryId],
+  //         summary: 'This is a test audit',
+  //       })
+  //       .expect(400)
+  //       .expect((res) => {
+  //         expect(res.body.data).toBeFalsy();
+  //         expect(res.body.message).toBe('Duplicate entry ID');
+  //       });
+  //   });
 });

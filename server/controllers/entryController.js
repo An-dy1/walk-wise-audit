@@ -43,7 +43,6 @@ exports.createEntry = async (req, res) => {
     }
 
     if (err.name === 'ValidationError') {
-      console.log('here');
       return apiResponse(res, 'error', err.message, null, null);
     }
 
