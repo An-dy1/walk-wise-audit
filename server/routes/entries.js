@@ -25,24 +25,24 @@ router.get('/', passport.authenticate('jwt', { session: false }), getEntries);
 // @route  GET /api/entries/:id
 // @desc   Get a single entry by ID
 // @access Private
-// router.get('/:id', passport.authenticate('jwt', { session: false }), getEntry);
+router.get('/:id', passport.authenticate('jwt', { session: false }), getEntry);
 
 // // @route  PUT /api/entries/:id
 // // @desc   Update an entry by ID
 // // @access Private
-// router.put(
-//   '/:id',
-//   passport.authenticate('jwt', { session: false }),
-//   updateEntry
-// );
+router.put(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  updateEntry
+);
 
 // // @route  DELETE /api/entries/:id
 // // @desc   Delete an entry by ID
 // // @access Private
-// router.delete(
-//   '/:id',
-//   passport.authenticate('jwt', { session: false }),
-//   deleteEntry
-// );
+router.delete(
+  '/:id',
+  passport.authenticate('jwt', { session: false }),
+  deleteEntry
+);
 
 module.exports = router;
