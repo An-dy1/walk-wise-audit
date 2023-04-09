@@ -172,7 +172,6 @@ describe('Manage entries', () => {
       });
   });
 
-  // todo: stopped here
   it('should delete an entry by id', async () => {
     const entry = await Entry.findOne({ user: validUserObjectId });
     await request(app)

@@ -67,7 +67,11 @@ exports.getEntries = async (req, res) => {
 exports.getEntry = async (req, res) => {
   try {
     const entry = await Entry.findById(req.params.id);
-    apiResponse(res, 'success', 'Entry retrieved', entry, null, 200);
+    if (entry === null) {
+      return apiResponse(res, 'error', 'Entry not found', null, null, 404);
+    } else {
+      apiResponse(res, 'success', 'Entry retrieved', entry, null, 200);
+    }
   } catch (err) {
     if (err.kind === 'ObjectId') {
       return apiResponse(res, 'error', 'Entry not found', null, null, 404);
@@ -125,11 +129,23 @@ exports.updateEntry = async (req, res) => {
 
 exports.deleteEntry = async (req, res) => {
   try {
-    // const entry = await Entry.findById(req.params.id);
-    // await entry.remove();
+    const entry = await Entry.findById(req.params.id);
+
+    if (entry === null) {
+      return apiResponse(res, 'error', 'Entry not found', null, null, 404);
+    }
+
     await Entry.deleteOne({ _id: req.params.id });
-    apiResponse(res, 'success', 'Entry deleted', null, null, 200);
+    apiResponse(
+      res,
+      'success',
+      'Entry deleted',
+      { _id: req.params.id },
+      null,
+      200
+    );
   } catch (err) {
+    // todo: make all this standard and reusable
     if (err.kind === 'ObjectId') {
       return apiResponse(res, 'error', 'Entry not found', null, null, 404);
     }
