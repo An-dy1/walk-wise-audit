@@ -16,6 +16,8 @@ function apiResponse(
     message,
   };
 
+  console.log('apiResponse data:', data);
+
   if (data) {
     response.data = data;
   }

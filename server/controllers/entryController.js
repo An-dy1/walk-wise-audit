@@ -3,6 +3,7 @@ const apiResponse = require('../utils/apiResponse');
 
 exports.createEntry = async (req, res) => {
   const {
+    audit,
     location,
     coordinates,
     text,
@@ -17,6 +18,7 @@ exports.createEntry = async (req, res) => {
   try {
     const newEntry = new Entry({
       user: userId,
+      audit,
       location,
       coordinates,
       text,
@@ -28,24 +30,16 @@ exports.createEntry = async (req, res) => {
         litter: litterRating,
       },
     });
+    // console.log(newEntry);
     await newEntry.save();
-    apiResponse(res, 'success', 'Entry created', newEntry, 201);
+
+    return res.status(201).json({ message: 'Entry created', data: newEntry });
+    // apiResponse(res, 'success', 'Entry created', newEntry, null, 201);
   } catch (err) {
-    if (!location || !coordinates) {
-      return apiResponse(
-        res,
-        'error',
-        'Location and coordinates are required.',
-        null,
-        null,
-        400
-      );
-    }
-
+    console.log('an error happened');
     if (err.name === 'ValidationError') {
-      return apiResponse(res, 'error', err.message, null, null);
+      return apiResponse(res, 'error', err.message, null, null, 400);
     }
-
     let message = err.message ? err.message : 'Server error';
     let status = err.status ? err.status : 500;
     apiResponse(res, 'error', message, null, null, status);
@@ -116,6 +110,7 @@ exports.updateEntry = async (req, res) => {
     await entry.save();
     apiResponse(res, 'success', 'Entry updated', entry, null, 200);
   } catch (err) {
+    console.log(err.kind, err.name, err.message);
     if (err.kind === 'ObjectId') {
       return apiResponse(res, 'error', 'Entry not found', null, null, 404);
     }
@@ -126,7 +121,7 @@ exports.updateEntry = async (req, res) => {
       return apiResponse(res, 'error', err.message, null, null, 400);
     }
     console.error(err.message);
-    apiResponse(res, 'error', 'Server error', null, 500);
+    apiResponse(res, 'error', 'Server error', null, null, 500);
   }
 };
 
